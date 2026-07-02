@@ -143,7 +143,11 @@ fn main() -> Result<(), Box<dyn Error>> {
         &[json!(1), json!(mining_address)],
     )?;
 
-    let tx = rpc_value(&miner_rpc, "gettransaction", &[json!(txid), json!(null), json!(true)])?;
+    let tx = rpc_value(
+        &miner_rpc,
+        "gettransaction",
+        &[json!(txid), json!(null), json!(true)],
+    )?;
     let decoded = &tx["decoded"];
     let vin = decoded["vin"]
         .as_array()
@@ -153,7 +157,8 @@ fn main() -> Result<(), Box<dyn Error>> {
     let previous_txid = value_as_str(&vin["txid"], "previous transaction id")?;
     let previous_vout_index = vin["vout"]
         .as_u64()
-        .ok_or_else(|| boxed_error("Expected previous vout index"))? as usize;
+        .ok_or_else(|| boxed_error("Expected previous vout index"))?
+        as usize;
 
     let previous_tx = rpc_value(
         &miner_rpc,
