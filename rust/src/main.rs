@@ -1,15 +1,15 @@
-use bitcoincore_rpc::{Auth, Client};
+use bitcoincore_rpc::{Auth, Client, RpcApi};
 use serde_json::{json, Value};
 use std::error::Error;
 use std::fs::File;
-use std::io::{Error as IoError, ErrorKind, Write};
+use std::io::{Error as IoError, Write};
 
 const RPC_URL: &str = "http://127.0.0.1:18443";
 const RPC_USER: &str = "alice";
 const RPC_PASS: &str = concat!("pass", "word");
 
 fn boxed_error(message: impl Into<String>) -> Box<dyn Error> {
-    Box::new(IoError::new(ErrorKind::Other, message.into()))
+    Box::new(IoError::other(message.into()))
 }
 
 fn wallet_url(wallet_name: &str) -> String {
